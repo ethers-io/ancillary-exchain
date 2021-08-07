@@ -44,7 +44,7 @@ Application Programming Interface (API)
 
 **JsonRpcProvider**
 
-The API for this provider is identical to the [EtherscanProvider](https://docs.ethers.io/v5/api/providers/api-providers/#EtherscanProvider),
+The API for this provider is identical to the [JsonRpcProvider](https://docs.ethers.io/v5/api/providers/jsonrpc-provider/#JsonRpcProvider),
 except it uses a formatter compatible with ExChain's transaction hashing
 algorithm.
 
