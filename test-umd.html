@@ -1,0 +1,44 @@
+<html>
+  <head><title>ExChain dist test</title></head>
+  <body>
+    <script type="text/javascript" src="./env-umd.js"></script>
+    <script type="text/javascript" src="./dist/ethers.umd.min.js"></script>
+    <script type="text/javascript" src="./dist/exchain.umd.js"></script>
+    <script type="text/javascript">
+      /**
+       * To test, create a file named `env-umd.js` in this folder:
+       *
+       * ```javascript
+       * const secretPhrase = "Any-Random-Phrase";
+       * ```
+       *
+       * And swpa you "Your-Random-Phrase" with anything you like.
+       * After loading the page the first time, a wallet address will
+       * be provided, which you can load with some test OKT.
+       */
+
+      console.log(secretPhrase);
+
+      // Connect to OKExchain
+      const provider = new _ethers_exchain.JsonRpcProvider("https:/\/exchaintestrpc.okex.org");
+
+      // Get a wallet ready
+      const wallet = new ethers.Wallet(ethers.utils.id(secretPhrase), provider);
+      console.log("Wallet", wallet.address);
+
+      (async function() {
+        // Show the balance
+        const balance = await wallet.getBalance();
+        console.log("Balance:", ethers.utils.formatUnits(balance));
+
+        // Send a transaction
+        const tx = await wallet.sendTransaction({ to: wallet.address, value: 1 });
+        console.log(tx);
+
+        // Wait for the transaction to get mined
+        const receipt = await tx.wait();
+        console.log(receipt);
+      })();
+    </script>
+  </body>
+</html>

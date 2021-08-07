@@ -1,0 +1,47 @@
+<html>
+  <head><title>ExChain dist test</title></head>
+  <body>
+    <script type="module">
+      /**
+       * To test, create a file named `env-esm.js` in this folder:
+       *
+       * ```javascript
+       * const secretPhrase = "Any-Random-Phrase";
+       * export { secretPhrase };
+       * ```
+       *
+       * And swpa you "Your-Random-Phrase" with anything you like.
+       * After loading the page the first time, a wallet address will
+       * be provided, which you can load with some test OKT.
+       */
+
+      import { secretPhrase } from "./env.js";
+
+      // Import the libraries
+      import { ethers } from "./dist/ethers.esm.min.js";
+      import { JsonRpcProvider } from "./dist/exchain.esm.js";
+
+
+      // Connect to OKExchain
+      const provider = new JsonRpcProvider("https:/\/exchaintestrpc.okex.org");
+
+      // Get a wallet ready
+      const wallet = new ethers.Wallet(ethers.utils.id(secretPhrase), provider);
+      console.log("Wallet", wallet.address);
+
+      (async function() {
+        // Show the balance
+        const balance = await wallet.getBalance();
+        console.log("Balance:", ethers.utils.formatUnits(balance));
+
+        // Send a transaction
+        const tx = await wallet.sendTransaction({ to: wallet.address, value: 1 });
+        console.log(tx);
+
+        // Wait for the transaction to get mined
+        const receipt = await tx.wait();
+        console.log(receipt);
+      })();
+    </script>
+  </body>
+</html>
