@@ -8,72 +8,58 @@ import { BigNumber, ethers } from "ethers";
 import { JsonRpcProvider } from ".";
 
 const Tests = {
+    // Blocks should only be tested after 1121818, per Telegram discussion
     Blocks: [
+
         {
-            hash: "0xe9296d312a937cdefc201a8fe80dbfa8a9c958ada9e863ddbb324804722f1de0",
-            parentHash: "0x04055304e432294a65ff31069c4d3092ff8b58f009cdb50eba5351e0332ad0f6",
-            number: 2,
-            timestamp: 1598671455,
-            nonce: "0x0000000000000000",
-            difficulty: 1,
-            gasLimit: BigNumber.from("0x025ddfc1"),
-            gasUsed: BigNumber.from("0x01fd0d"),
-            miner: "0x9ef9f4360c606c7AB4db26b016007d3ad0aB86a0",
-            extraData: "0xd883010002846765746888676f312e31332e34856c696e757800000000000000a12743737089564abf13a27ea94b80e57f2a0b13b8929f1bc4ced950f68e6c1271abda9bfc84182d90286a4e87a37382585dccc94d144585da0f2d7e11be979801",
-            transactions: [
-              "0x1d06a9d52255a2a4385d55093aec7671f3d7f6d83d4cd438991be8b6588e9b91"
-            ]
+            hash: '0x19e5ebcc8d2c1ca40c04ee74164616ebd1d099a69820f83d206d5a5d2f38941e',
+            parentHash: '0x24fd17014507aaad94a89688bae98860ef5f022c73d1c5f6c7820f10573ed45f',
+            number: 5150897,
+            timestamp: 1629226634,
+            nonce: '0x0000000000000000',
+            difficulty: 0,
+            gasLimit: BigNumber.from("0xffffffff"),
+            gasUsed: BigNumber.from("0x00"),
+            miner: '0x7a503503558C8281B3d00455dDb3497b958F23da',
+            extraData: '0x',
+            transactions: []
         }
     ],
     Transactions: [
         {
-            hash: "0x1d06a9d52255a2a4385d55093aec7671f3d7f6d83d4cd438991be8b6588e9b91",
+            hash: '0x569390a6ea347950ca460ea1f70e8fa79b01ec37615ef4c709c1bbd9e3ee3fc1',
             type: 0,
             accessList: null,
-            blockHash: "0xe9296d312a937cdefc201a8fe80dbfa8a9c958ada9e863ddbb324804722f1de0",
-            blockNumber: 2,
+            blockHash: '0x34a360f9eec4a394cc4a0bb43dd13ff747a709b3384be317e9b69366c49d1dae',
+            blockNumber: 5150948,
             transactionIndex: 0,
-            from: "0x9ef9f4360c606c7AB4db26b016007d3ad0aB86a0",
-            gasPrice: BigNumber.from("0x00"),
-            gasLimit: BigNumber.from("0x7fffffffffffffff"),
-            to: "0x0000000000000000000000000000000000001001",
-            value: BigNumber.from("0x00"),
-            nonce: 0,
-            data: "0xc96be4cb0000000000000000000000002d4c407bbe49438ed859fe965b140dcf1aab71a9",
-            r: "0xf440a61793afaa150924f2aa18dc92bc6f996faf7681b39288010f9467fbd0c2",
-            s: "0x392c671957ff33ac30249fb8cf12f2dc10ba3edcf9a18078bf8c658c271a22ac",
-            v: 147,
+            from: '0x8522395fdca22e59b6F8d0bA2579ACd5877f50b7',
+            gasPrice: BigNumber.from("0x05f5e100"),
+            gasLimit: BigNumber.from('0x7b0c'),
+            to: '0x8522395fdca22e59b6F8d0bA2579ACd5877f50b7',
+            value: BigNumber.from('0x01'),
+            nonce: 4,
+            data: '0x',
+            r: '0x92be234a54bc1300f0fd8698e1e916857c4a05894625c82f6ca3f15999de8050',
+            s: '0x5a441e023331b8d2763c4e5f93700b84b3cf7af6e4f96e72db50c0cb4e0ec5e1',
+            v: 165,
             creates: null,
-            chainId: 56,
+            chainId: 65,
         }
     ],
     TransactionReceipts: [
         {
-            to: "0x0000000000000000000000000000000000001001",
-            from: "0x9ef9f4360c606c7AB4db26b016007d3ad0aB86a0",
+            to: '0x8522395fdca22e59b6F8d0bA2579ACd5877f50b7',
+            from: '0x8522395fdca22e59b6F8d0bA2579ACd5877f50b7',
             contractAddress: null,
             transactionIndex: 0,
-            gasUsed: BigNumber.from("0x01fd0d"),
-            logsBloom: "0x00000000000000401000000000000000000000000000000000000000000000000000000002000000000000000000000000000200000080000000000000000000000000000000000000000000100004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            blockHash: "0xe9296d312a937cdefc201a8fe80dbfa8a9c958ada9e863ddbb324804722f1de0",
-            transactionHash: "0x1d06a9d52255a2a4385d55093aec7671f3d7f6d83d4cd438991be8b6588e9b91",
-            logs: [
-                {
-                    transactionIndex: 0,
-                    blockNumber: 2,
-                    transactionHash: "0x1d06a9d52255a2a4385d55093aec7671f3d7f6d83d4cd438991be8b6588e9b91",
-                    address: "0x0000000000000000000000000000000000001001",
-                    topics: [
-                        "0xddb6012116e51abf5436d956a4f0ebd927e92c576ff96d7918290c8782291e3e",
-                        "0x0000000000000000000000002d4c407bbe49438ed859fe965b140dcf1aab71a9"
-                    ],
-                    data: "0x",
-                    logIndex: 0,
-                    blockHash: "0xe9296d312a937cdefc201a8fe80dbfa8a9c958ada9e863ddbb324804722f1de0"
-                }
-            ],
-            blockNumber: 2,
-            cumulativeGasUsed: BigNumber.from("0x01fd0d"),
+            gasUsed: BigNumber.from('0x5208'),
+            logsBloom: '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+            blockHash: '0x34a360f9eec4a394cc4a0bb43dd13ff747a709b3384be317e9b69366c49d1dae',
+            transactionHash: '0x569390a6ea347950ca460ea1f70e8fa79b01ec37615ef4c709c1bbd9e3ee3fc1',
+            logs: [],
+            blockNumber: 5150948,
+            cumulativeGasUsed: BigNumber.from('0x5208'),
             status: 1,
             type: 0,
             byzantium: true
@@ -110,35 +96,43 @@ export function equals(actual: any, expected: any): boolean {
 
 describe("Test BscscanProvider", function() {
     const provider = new JsonRpcProvider("https:/\/exchaintestrpc.okex.org");
+
+    // A secret we can use in our testcases for wallets and such
+    const secret = (function() {
+        try {
+            return JSON.parse(fs.readFileSync(resolve(__dirname, "../env.json")).toString()).secret;
+        } catch (error) {
+            console.log("No secret", error);
+        }
+        return null;
+    })();
+
+    if (secret) {
+        it("Sends a transaction", async function() {
+            this.timeout(60000);
+            const wallet = new ethers.Wallet(ethers.utils.id(secret), provider);
+            console.log("Wallet:", wallet.address);
+            const tx = await wallet.sendTransaction({ to: wallet.address, value: 1 });
+            //console.log(tx);
+            await tx.wait();
+        });
+    }
+
     Tests.Blocks.forEach((test) => {
-/*
         it(`fetches block #${ test.number }`, async function() {
             this.timeout(60000);
-            console.log(test);
             const block = await provider.getBlock(test.number);
-            console.log("BB", block);
-            equals(block, test)
+            //console.log("BLOCK", block);
+            equals(block, test);
         });
-*/
     });
 
-    it("Sends a transaction", async function() {
-        this.timeout(60000);
-        const secret = JSON.parse(fs.readFileSync(resolve(__dirname, "../env.json")).toString()).secret;
-        const wallet = new ethers.Wallet(ethers.utils.id(secret), provider);
-        console.log(wallet);
-        const tx = await wallet.sendTransaction({ to: wallet.address, value: 1 });
-        console.log(tx);
-        const receipt = await tx.wait();
-        console.log(receipt);
-    });
-
-/*
 
     Tests.Transactions.forEach((test) => {
         it(`fetches transaction: ${ test.hash.substring(0, 10) }`, async function() {
             this.timeout(60000);
             const tx = await provider.getTransaction(test.hash);
+            //console.log("TX", tx);
             assert.ok(typeof(tx.confirmations) === "number", "missing confirmations");
             equals(tx, test)
         });
@@ -148,9 +142,9 @@ describe("Test BscscanProvider", function() {
         it(`fetches transaction Receipt: ${ test.transactionHash.substring(0, 10) }`, async function() {
             this.timeout(60000);
             const receipt = await provider.getTransactionReceipt(test.transactionHash);
+            //console.log("REC", receipt);
             assert.ok(typeof(receipt.confirmations) === "number", "missing confirmations");
             equals(receipt, test)
         });
     });
-    */
 });
