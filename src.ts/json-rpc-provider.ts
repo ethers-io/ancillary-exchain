@@ -12,7 +12,6 @@ let defaultFormatter: null | Formatter = null;
 export class JsonRpcProvider extends providers.JsonRpcProvider {
 
     static getFormatter(): Formatter {
-        console.log("Using mine");
         if (defaultFormatter == null) {
             defaultFormatter = new Formatter();
         }
