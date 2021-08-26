@@ -18,7 +18,6 @@ const logger = new ethers_1.utils.Logger(_version_1.version);
 let defaultFormatter = null;
 class JsonRpcProvider extends ethers_1.providers.JsonRpcProvider {
     static getFormatter() {
-        console.log("Using mine");
         if (defaultFormatter == null) {
             defaultFormatter = new formatter_1.Formatter();
         }

@@ -15,7 +15,6 @@ const logger = new utils.Logger(version);
 let defaultFormatter = null;
 export class JsonRpcProvider extends providers.JsonRpcProvider {
     static getFormatter() {
-        console.log("Using mine");
         if (defaultFormatter == null) {
             defaultFormatter = new Formatter();
         }
