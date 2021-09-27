@@ -5,7 +5,7 @@ import { resolve } from "path";
 
 import { BigNumber, ethers } from "ethers";
 
-import { JsonRpcProvider } from ".";
+import { JsonRpcProvider, WebSocketProvider } from ".";
 
 const Tests = {
     // Blocks should only be tested after 1121818, per Telegram discussion
@@ -69,23 +69,23 @@ const Tests = {
 
 function _equals(path: string, actual: any, expected: any): void {
     if (expected === null) {
-        assert.equal(actual, expected, `expected null: ${ path }!null`)
+        assert.equal(actual, expected, `expected null: ${path}!null`)
     } else if (BigNumber.isBigNumber(expected)) {
-        assert.ok(BigNumber.isBigNumber(actual), `expected BigNumber instance: ${ path }!BigNumber`);
-        assert.ok(expected.eq(actual), `BigNumber not equal: ${ path }!a.eq(e)`);
-    } else if (typeof(expected) === "object") {
-        assert.ok(typeof(actual) === "object", `expected object: ${ path }!object`);
+        assert.ok(BigNumber.isBigNumber(actual), `expected BigNumber instance: ${path}!BigNumber`);
+        assert.ok(expected.eq(actual), `BigNumber not equal: ${path}!a.eq(e)`);
+    } else if (typeof (expected) === "object") {
+        assert.ok(typeof (actual) === "object", `expected object: ${path}!object`);
         for (const key in expected) {
-            _equals(`${ path }@${ key }/`, actual[key], expected[key]);
+            _equals(`${path}@${key}/`, actual[key], expected[key]);
         }
     } else if (Array.isArray(expected)) {
-        assert.ok(Array.isArray(actual), `expected an array: ${ path }!array`);
-        assert.equal(expected.length, actual.length, `array length mismatch: ${ path }a.length!=e.length`);
+        assert.ok(Array.isArray(actual), `expected an array: ${path}!array`);
+        assert.equal(expected.length, actual.length, `array length mismatch: ${path}a.length!=e.length`);
         expected.forEach((item, index) => {
-            _equals(`${ path }#${ index }/`, actual[index], expected[index]);
+            _equals(`${path}#${index}/`, actual[index], expected[index]);
         });
     } else {
-        assert.equal(actual, expected, `not equal: ${ path }a!=b`);
+        assert.equal(actual, expected, `not equal: ${path}a!=b`);
     }
 }
 
@@ -94,11 +94,11 @@ export function equals(actual: any, expected: any): boolean {
     return true;
 }
 
-describe("Test BscscanProvider", function() {
+describe("Test BscscanProvider JsonRpcProvider", function () {
     const provider = new JsonRpcProvider("https:/\/exchaintestrpc.okex.org");
 
     // A secret we can use in our testcases for wallets and such
-    const secret = (function() {
+    const secret = (function () {
         try {
             return JSON.parse(fs.readFileSync(resolve(__dirname, "../env.json")).toString()).secret;
         } catch (error) {
@@ -108,9 +108,9 @@ describe("Test BscscanProvider", function() {
     })();
 
     if (secret) {
-        it("Sends a transaction", async function() {
+        it("Sends a transaction", async function () {
             this.timeout(60000);
-            const wallet = new ethers.Wallet(ethers.utils.id(secret), provider);
+            const wallet = new ethers.Wallet(secret, provider);
             console.log("Wallet:", wallet.address);
             const tx = await wallet.sendTransaction({ to: wallet.address, value: 1 });
             //console.log(tx);
@@ -119,7 +119,7 @@ describe("Test BscscanProvider", function() {
     }
 
     Tests.Blocks.forEach((test) => {
-        it(`fetches block #${ test.number }`, async function() {
+        it(`fetches block #${test.number}`, async function () {
             this.timeout(60000);
             const block = await provider.getBlock(test.number);
             //console.log("BLOCK", block);
@@ -129,22 +129,78 @@ describe("Test BscscanProvider", function() {
 
 
     Tests.Transactions.forEach((test) => {
-        it(`fetches transaction: ${ test.hash.substring(0, 10) }`, async function() {
+        it(`fetches transaction: ${test.hash.substring(0, 10)}`, async function () {
             this.timeout(60000);
             const tx = await provider.getTransaction(test.hash);
-            //console.log("TX", tx);
-            assert.ok(typeof(tx.confirmations) === "number", "missing confirmations");
+            console.log("TX", tx);
+            assert.ok(typeof (tx.confirmations) === "number", "missing confirmations");
             equals(tx, test)
         });
     });
 
     Tests.TransactionReceipts.forEach((test) => {
-        it(`fetches transaction Receipt: ${ test.transactionHash.substring(0, 10) }`, async function() {
+        it(`fetches transaction Receipt: ${test.transactionHash.substring(0, 10)}`, async function () {
             this.timeout(60000);
             const receipt = await provider.getTransactionReceipt(test.transactionHash);
             //console.log("REC", receipt);
-            assert.ok(typeof(receipt.confirmations) === "number", "missing confirmations");
+            assert.ok(typeof (receipt.confirmations) === "number", "missing confirmations");
             equals(receipt, test)
         });
     });
 });
+
+describe("Test BscscanProvider WebSocketProvider", function () {
+    const provider = new WebSocketProvider('wss:/\/exchaintestws.okex.org:8443');
+
+    // A secret we can use in our testcases for wallets and such
+    const secret = (function () {
+        try {
+            return JSON.parse(fs.readFileSync(resolve(__dirname, "../env.json")).toString()).secret;
+        } catch (error) {
+            console.log("No secret", error);
+        }
+        return null;
+    })();
+
+    if (secret) {
+        it("Sends a transaction WebSocketProvider", async function () {
+            this.timeout(60000);
+            const wallet = new ethers.Wallet(secret, provider);
+            console.log("Wallet:", wallet.address);
+            const tx = await wallet.sendTransaction({ to: wallet.address, value: 1 });
+            //console.log(tx);
+            await tx.wait();
+        });
+    }
+
+    Tests.Blocks.forEach((test) => {
+        it(`fetches block #${test.number} WebSocketProvider`, async function () {
+            this.timeout(60000);
+            const block = await provider.getBlock(test.number);
+            //console.log("BLOCK", block);
+            equals(block, test);
+        });
+    });
+
+
+    Tests.Transactions.forEach((test) => {
+        it(`WebSocketProvider fetches transaction: ${test.hash.substring(0, 10)}`, async function () {
+            this.timeout(60000);
+            const tx = await provider.getTransaction(test.hash);
+            console.log("TX", tx);
+            assert.ok(typeof (tx.confirmations) === "number", "missing confirmations");
+            equals(tx, test)
+        });
+    });
+
+    Tests.TransactionReceipts.forEach((test) => {
+        it(`WebSocketProvider fetches transaction Receipt: ${test.transactionHash.substring(0, 10)}`, async function () {
+            this.timeout(60000);
+            const receipt = await provider.getTransactionReceipt(test.transactionHash);
+            //console.log("REC", receipt);
+            assert.ok(typeof (receipt.confirmations) === "number", "missing confirmations");
+            equals(receipt, test)
+        });
+    });
+});
+

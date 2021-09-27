@@ -7,3 +7,7 @@ export declare class JsonRpcProvider extends providers.JsonRpcProvider {
 export declare class StaticJsonRpcProvider extends JsonRpcProvider {
     detectNetwork(): Promise<providers.Network>;
 }
+export declare class WebSocketProvider extends providers.WebSocketProvider {
+    static getFormatter(): Formatter;
+    static getNetwork(networkish: providers.Networkish): providers.Network;
+}

@@ -21,10 +21,10 @@ Installing and Importing
 
 ```javascript
 // JavaScript
-const { JsonRpcProvider } = require("@ethers-ancillary/exchain");
+const { JsonRpcProvider, WebSocketProvider } = require("@ethers-ancillary/exchain");
 
 // TypeScript
-import { JsonRpcProvider } from "@ethers-ancillary/exchain";
+import { JsonRpcProvider, WebSocketProvider } from "@ethers-ancillary/exchain";
 ```
 
 **Browser**
@@ -34,7 +34,7 @@ core library (i.e. ethers.esm.min.js) and import using:
 
 ```html
 <script type="module">
-  import { JsonRpcProvider } from "./exchain.esm.js";
+  import { JsonRpcProvider, WebSocketProvider } from "./exchain.esm.js";
 </script>
 ```
 
