@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StaticJsonRpcProvider = exports.JsonRpcProvider = void 0;
+exports.WebSocketProvider = exports.StaticJsonRpcProvider = exports.JsonRpcProvider = void 0;
 const ethers_1 = require("ethers");
 const formatter_1 = require("./formatter");
 const networks_1 = require("./networks");
@@ -60,4 +60,24 @@ class StaticJsonRpcProvider extends JsonRpcProvider {
     }
 }
 exports.StaticJsonRpcProvider = StaticJsonRpcProvider;
+class WebSocketProvider extends ethers_1.providers.WebSocketProvider {
+    static getFormatter() {
+        console.log("Using mine");
+        if (defaultFormatter == null) {
+            defaultFormatter = new formatter_1.Formatter();
+        }
+        return defaultFormatter;
+    }
+    static getNetwork(networkish) {
+        const network = networks_1.getNetwork((networkish == null) ? "exchain" : networkish);
+        if (network == null) {
+            return logger.throwError(`unknown network: ${JSON.stringify(network)}`, ethers_1.utils.Logger.errors.UNSUPPORTED_OPERATION, {
+                operation: "getNetwork",
+                value: networkish
+            });
+        }
+        return network;
+    }
+}
+exports.WebSocketProvider = WebSocketProvider;
 //# sourceMappingURL=json-rpc-provider.js.map

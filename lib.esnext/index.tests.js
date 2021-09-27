@@ -106,7 +106,7 @@ function equals(actual, expected) {
     return true;
 }
 exports.equals = equals;
-describe("Test BscscanProvider", function () {
+describe("Test BscscanProvider JsonRpcProvider", function () {
     const provider = new _1.JsonRpcProvider("https:/\/exchaintestrpc.okex.org");
     // A secret we can use in our testcases for wallets and such
     const secret = (function () {
@@ -122,7 +122,7 @@ describe("Test BscscanProvider", function () {
         it("Sends a transaction", function () {
             return __awaiter(this, void 0, void 0, function* () {
                 this.timeout(60000);
-                const wallet = new ethers_1.ethers.Wallet(ethers_1.ethers.utils.id(secret), provider);
+                const wallet = new ethers_1.ethers.Wallet(secret, provider);
                 console.log("Wallet:", wallet.address);
                 const tx = yield wallet.sendTransaction({ to: wallet.address, value: 1 });
                 //console.log(tx);
@@ -145,7 +145,7 @@ describe("Test BscscanProvider", function () {
             return __awaiter(this, void 0, void 0, function* () {
                 this.timeout(60000);
                 const tx = yield provider.getTransaction(test.hash);
-                //console.log("TX", tx);
+                console.log("TX", tx);
                 assert_1.default.ok(typeof (tx.confirmations) === "number", "missing confirmations");
                 equals(tx, test);
             });
@@ -153,6 +153,63 @@ describe("Test BscscanProvider", function () {
     });
     Tests.TransactionReceipts.forEach((test) => {
         it(`fetches transaction Receipt: ${test.transactionHash.substring(0, 10)}`, function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                this.timeout(60000);
+                const receipt = yield provider.getTransactionReceipt(test.transactionHash);
+                //console.log("REC", receipt);
+                assert_1.default.ok(typeof (receipt.confirmations) === "number", "missing confirmations");
+                equals(receipt, test);
+            });
+        });
+    });
+});
+describe("Test BscscanProvider WebSocketProvider", function () {
+    const provider = new _1.WebSocketProvider('wss:/\/exchaintestws.okex.org:8443');
+    // A secret we can use in our testcases for wallets and such
+    const secret = (function () {
+        try {
+            return JSON.parse(fs_1.default.readFileSync(path_1.resolve(__dirname, "../env.json")).toString()).secret;
+        }
+        catch (error) {
+            console.log("No secret", error);
+        }
+        return null;
+    })();
+    if (secret) {
+        it("Sends a transaction WebSocketProvider", function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                this.timeout(60000);
+                const wallet = new ethers_1.ethers.Wallet(secret, provider);
+                console.log("Wallet:", wallet.address);
+                const tx = yield wallet.sendTransaction({ to: wallet.address, value: 1 });
+                //console.log(tx);
+                yield tx.wait();
+            });
+        });
+    }
+    Tests.Blocks.forEach((test) => {
+        it(`fetches block #${test.number} WebSocketProvider`, function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                this.timeout(60000);
+                const block = yield provider.getBlock(test.number);
+                //console.log("BLOCK", block);
+                equals(block, test);
+            });
+        });
+    });
+    Tests.Transactions.forEach((test) => {
+        it(`WebSocketProvider fetches transaction: ${test.hash.substring(0, 10)}`, function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                this.timeout(60000);
+                const tx = yield provider.getTransaction(test.hash);
+                console.log("TX", tx);
+                assert_1.default.ok(typeof (tx.confirmations) === "number", "missing confirmations");
+                equals(tx, test);
+            });
+        });
+    });
+    Tests.TransactionReceipts.forEach((test) => {
+        it(`WebSocketProvider fetches transaction Receipt: ${test.transactionHash.substring(0, 10)}`, function () {
             return __awaiter(this, void 0, void 0, function* () {
                 this.timeout(60000);
                 const receipt = yield provider.getTransactionReceipt(test.transactionHash);

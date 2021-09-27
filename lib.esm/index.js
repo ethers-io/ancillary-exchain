@@ -1,4 +1,4 @@
-import { JsonRpcProvider, StaticJsonRpcProvider } from "./json-rpc-provider";
+import { JsonRpcProvider, StaticJsonRpcProvider, WebSocketProvider } from "./json-rpc-provider";
 import { getNetwork } from "./networks";
-export { JsonRpcProvider, StaticJsonRpcProvider, getNetwork, };
+export { JsonRpcProvider, StaticJsonRpcProvider, WebSocketProvider, getNetwork, };
 //# sourceMappingURL=index.js.map

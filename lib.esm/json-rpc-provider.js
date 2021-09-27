@@ -55,4 +55,23 @@ export class StaticJsonRpcProvider extends JsonRpcProvider {
         });
     }
 }
+export class WebSocketProvider extends providers.WebSocketProvider {
+    static getFormatter() {
+        console.log("Using mine");
+        if (defaultFormatter == null) {
+            defaultFormatter = new Formatter();
+        }
+        return defaultFormatter;
+    }
+    static getNetwork(networkish) {
+        const network = getNetwork((networkish == null) ? "exchain" : networkish);
+        if (network == null) {
+            return logger.throwError(`unknown network: ${JSON.stringify(network)}`, utils.Logger.errors.UNSUPPORTED_OPERATION, {
+                operation: "getNetwork",
+                value: networkish
+            });
+        }
+        return network;
+    }
+}
 //# sourceMappingURL=json-rpc-provider.js.map

@@ -53,3 +53,26 @@ export class StaticJsonRpcProvider extends JsonRpcProvider {
         return network;
     }
 }
+
+export class WebSocketProvider extends providers.WebSocketProvider {
+
+    static getFormatter(): Formatter {
+        console.log("Using mine");
+        if (defaultFormatter == null) {
+            defaultFormatter = new Formatter();
+        }
+
+        return defaultFormatter;
+    }
+
+    static getNetwork(networkish: providers.Networkish): providers.Network {
+        const network = getNetwork((networkish == null) ? "exchain": networkish);
+        if (network == null) {
+            return logger.throwError(`unknown network: ${ JSON.stringify(network) }`, utils.Logger.errors.UNSUPPORTED_OPERATION, {
+                operation: "getNetwork",
+                value: networkish
+            });
+        }
+        return network;
+    }
+}
