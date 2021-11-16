@@ -8,7 +8,7 @@ export function computeTransactionHash(tx) {
         nonce: stringify(tx.nonce || 0),
         gasPrice: stringify(tx.gasPrice || 0),
         gas: stringify(tx.gasLimit || 0),
-        to: ((tx.to != null) ? utils.hexlify(tx.to) : "0x"),
+        to: ((tx.to != null) ? utils.hexlify(tx.to) : ""),
         value: stringify(tx.value || 0),
         input: utils.hexlify(tx.data),
         v: stringify(tx.v || 0),

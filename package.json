@@ -2,13 +2,13 @@
   "author": "Richard Moore <me@ricmoo.com>",
   "dependencies": {
     "@okexchain/amino-js": "^0.1.3",
-    "ethers": "^5.4.4"
+    "ethers": "^5.5.1"
   },
   "description": "An ethers-compatible provider for OKExChain.",
   "devDependencies": {
-    "@types/mocha": "^8.2.3",
-    "@types/node": "^15.6.1",
-    "mocha": "^9.0.2",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.11.7",
+    "mocha": "^9.1.3",
     "reticulate": "^0.0.6",
     "rollup": "^2.52.7",
     "@rollup/plugin-node-resolve": "13.0.4",
